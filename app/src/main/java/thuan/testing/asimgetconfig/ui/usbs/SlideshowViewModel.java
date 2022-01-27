@@ -21,9 +21,9 @@ public class SlideshowViewModel extends ViewModel {
     }
     public String getConfigs(Context context) {
         List<DeviceInfo> devices2 = SDKLocker.getListUsbDevices(context);
-        String result = "Danh sách các cổng usb - thư viện SDKLocker \n";
+        String result = "Danh sách các cổng usb - thư viện SDKLocker: usb-to-com \n";
         for (DeviceInfo devi: devices2) {
-            result += devi.device.getDeviceName()  + ", productId=" + devi.device.getProductId() + ", vendorId=" + devi.device.getVendorId()+ ", having driver: " + (devi.driver != null ? "yes" : "no") + "\n";
+            result += devi.device.getDeviceName()  + ", productId=" + devi.device.getProductId() + ", vendorId=" + devi.device.getVendorId()+ ", having usb-to-com driver: " + (devi.driver != null ? "yes" : "no") + "\n\n";
         }
 
         return result;
