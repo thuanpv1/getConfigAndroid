@@ -21,7 +21,7 @@ public class SlideshowViewModel extends ViewModel {
         mText.setValue("This is slideshow fragment");
     }
     public String getConfigs(Context context) {
-        List<DeviceInfo> devices2 = SDKLocker.getListUsbDevices(context);
+        List<DeviceInfo> devices2 = SDKLocker.getAllUsbDevices(context);
         String result = "Danh sách các cổng usb - thư viện SDKLocker: usb-to-com \n";
         for (DeviceInfo devi: devices2) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

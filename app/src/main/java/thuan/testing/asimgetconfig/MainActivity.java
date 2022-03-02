@@ -1,5 +1,6 @@
 package thuan.testing.asimgetconfig;
 
+import android.app.ActivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import asim.sdk.locker.DeviceInfo;
 import asim.sdk.locker.SDKLocker;
 import asim.sdk.printer.SDKPrints;
 import asim.sdk.sdksimdispenser.SimdispenserMain;
+import thuan.testing.asimgetconfig.ui.configs.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,11 +36,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
-        List<Map<String, String>> configs = SDKPrints.getListUsbDevices(this);
-
-        List<DeviceInfo> devices2 = SDKLocker.getAllUsbDevices(this);
-
 
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -62,6 +59,30 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
+    public String getMyData() {
+
+        // Declaring and Initializing the ActivityManager
+        ActivityManager actManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        // Declaring MemoryInfo object
+        ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+        // Fetching the data from the ActivityManager
+        actManager.getMemoryInfo(memInfo);
+
+        // Fetching the available and total memory and converting into Giga Bytes
+        double availMemory = (double) memInfo.availMem/(1024*1024*1024);
+        double totalMemory= (double) memInfo.totalMem/(1024*1024*1024);
+        double percentUsed = 100 * (totalMemory - availMemory)/totalMemory;
+        boolean lowMemory = memInfo.lowMemory;
+        Long threshold = memInfo.threshold/(1024*1024*1024);
+
+        // Displaying the memory info into the TextView
+        String str1 = ("Available RAM: " + String.valueOf(availMemory)
+                + "\nTotal RAM: " + String.valueOf(totalMemory)
+                + "\nPercentage used: " + String.valueOf(percentUsed) + "%"
+        );
+        String str2 = ("Lowmemory ==" + String.valueOf(lowMemory) + "\n threshold == " + String.valueOf(threshold));
+        return str1 + "\n" + str2;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
