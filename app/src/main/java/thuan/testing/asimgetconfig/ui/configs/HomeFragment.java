@@ -27,6 +27,7 @@ public class HomeFragment extends Fragment {
     public TextView textViewDeviceInfo = null;
     public TextView textMemInfo = null;
     public TextView textStorage = null;
+    public TextView textServices = null;
     @Override
     public void onResume() {
         super.onResume();
@@ -35,21 +36,17 @@ public class HomeFragment extends Fragment {
 //        String memInfo = activity.        getCommandData("cat /proc/stat"); //cat /proc/stat
         String memInfo = activity.        getCommandData("cat /proc/meminfo"); //cat /proc/stat
         String storageInfo = activity.        getCommandData("df -h"); //cat /proc/stat
+        String allservice = activity.        getCommandData("ps"); //cat /proc/stat
 
-        textViewDeviceInfo.setText(myDataFromActivity);
-        textMemInfo.setText(memInfo);
-        textStorage.setText(storageInfo);
+        textViewDeviceInfo.setText("Device Information \n" + myDataFromActivity);
+        textMemInfo.setText("Memory Information \n" + memInfo);
+        textStorage.setText("Storage Information \n" + storageInfo);
+        textServices.setText("Services Information \n" + allservice);
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        MainActivity activity = (MainActivity) getActivity();
-        String myDataFromActivity = activity.getMyData();
-//        String memInfo = activity.        getCommandData("cat /proc/stat"); //cat /proc/stat
-        String memInfo = activity.        getCommandData("cat /proc/meminfo"); //cat /proc/stat
-        String storageInfo = activity.        getCommandData("df -h"); //cat /proc/stat
-
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -57,10 +54,7 @@ public class HomeFragment extends Fragment {
         textViewDeviceInfo = root.findViewById(R.id.text_device_info);
         textMemInfo = root.findViewById(R.id.mem_info);
         textStorage = root.findViewById(R.id.storage_info);
-        textViewDeviceInfo.setText(myDataFromActivity);
-        textMemInfo.setText(memInfo);
-        textStorage.setText(storageInfo);
-
+        textServices = root.findViewById(R.id.servicesInfo);
 
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
