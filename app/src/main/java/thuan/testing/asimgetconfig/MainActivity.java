@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         List<Map<String, String>> configs = SDKPrints.getListUsbDevices(this);
 
-        List<DeviceInfo> devices2 = SDKLocker.getListUsbDevices(this);
+        List<DeviceInfo> devices2 = SDKLocker.getAllUsbDevices(this);
 
 
         setSupportActionBar(toolbar);
