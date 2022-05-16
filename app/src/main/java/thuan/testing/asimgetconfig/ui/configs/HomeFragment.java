@@ -1,5 +1,8 @@
 package thuan.testing.asimgetconfig.ui.configs;
 
+import android.app.ActivityManager;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,12 +13,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 import thuan.testing.asimgetconfig.MainActivity;
 import thuan.testing.asimgetconfig.R;
@@ -37,14 +43,37 @@ public class HomeFragment extends Fragment {
         String memInfo = activity.        getCommandData("cat /proc/meminfo"); //cat /proc/stat
         String storageInfo = activity.        getCommandData("df -h"); //cat /proc/stat
         String allservice = activity.        getCommandData("ps"); //cat /proc/stat
+//        String test = activity.getCommandData("am stack list");
+//        Log.d("Testing command", activity.getCommandData("stack list"));
 
         textViewDeviceInfo.setText("Device Information \n" + myDataFromActivity);
         textMemInfo.setText("Memory Information \n" + memInfo);
         textStorage.setText("Storage Information \n" + storageInfo);
         textServices.setText("Services Information \n" + allservice);
 
-    }
+//        switchTask();
 
+
+
+    }
+    void switchTask()
+    {
+        Log.d("runingSwitchTask", "Running to switch tasks");
+        int tid;
+        ActivityManager am;
+        am = (ActivityManager)getContext().getSystemService( Context.ACTIVITY_SERVICE );
+        List<ActivityManager.AppTask> tasks = am.getAppTasks();
+        List<ActivityManager.RunningTaskInfo> runningTaskInfoList =  am.getRunningTasks(3);
+        for (int index = 0; index < tasks.size(); index++) {
+            Log.d("hihi", String.valueOf(tasks.get(index).getTaskInfo().description));
+            Log.d("hihi", String.valueOf(tasks.get(index).getTaskInfo().id));
+            Log.d("hihi", String.valueOf(tasks.get(index).getTaskInfo().persistentId));
+            Log.d("hihi", String.valueOf(tasks.get(index).getTaskInfo().affiliatedTaskId));
+        }
+
+        tid = 2469;  // read task id of *other* app from file
+        am.moveTaskToFront( tid, 0, null );
+    }
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
